@@ -1,5 +1,30 @@
 <!DOCTYPE html>
 <html>
+<% if @posts.any? %>
+  <% @posts.each do |post| %>
+    <h3><%= post.name %></h2>
+    <p><%= image_tag post.image.url(:thumb) %><p><br>
+    <p><%= post.description %><p><br>
+    <p><%= link_to 'Edit', edit_post_path(post) %><p><br>
+    <p><%= link_to 'Delete', post_path(post), method: :delete %><p><br>
+    <p><%= link_to '♡', post_likes_path(post), class: 'likes-link' %><p><br>
+    <span class="likes_count"> <%= post.likes.count %> </span> <%= 'like'.pluralize(post.likes.count) %><br>
+    <p><%= link_to 'Add a comment', new_post_comment_path(post) %><p><br>
+    <h3>Comments for this post:</h3><br>
+    <% if post.comments.any? %>
+    <ul>
+      <% post.comments.each do |comment| %>
+        <li>
+          <%= comment.thoughts %>
+        </li>
+      <% end %>
+    </ul>
+    <% else %>
+      <p>No comments</p>
+    <% end %>
+  <% end %>
+<% else %>
 <h2>No posts yet</h2>
-<a href = '#'>Add a post</a>
+<% end %>
+<%= link_to 'Add a post', new_post_path %>
 </html>
